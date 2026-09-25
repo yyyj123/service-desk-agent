@@ -1,0 +1,9 @@
+**
+!requirements-enterprise.lock.txt
+!service/
+!service/**
+!portal/
+!portal/**
+!knowledge/
+!knowledge/**
+**/__pycache__/

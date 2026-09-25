@@ -1,0 +1,30 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8600:8600"
+    env_file:
+      - .env
+      - .env.enterprise
+    environment:
+      IT_DATA_DIR: /app/runtime
+    volumes:
+      - it_state:/app/runtime
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    profiles: [monitoring]
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./deploy/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./deploy/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - ./deploy/secrets/metrics-token:/run/secrets/metrics-token:ro
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+volumes:
+  it_state:
+  prometheus_data:

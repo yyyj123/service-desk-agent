@@ -1,0 +1,2 @@
+-r requirements-enterprise.lock.txt
+# Test dependencies are included in the lock file.

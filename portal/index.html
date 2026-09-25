@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>服务台 · 工作台</title><link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script></head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+<section id="login-view" class="login-layout">
+  <div class="intro"><div class="brand"><span class="brand-mark" aria-hidden="true">服</span> 服务台</div><h1>问题有依据，<br>操作有确认。</h1><p>查阅知识资料，获取问题解答，提交服务申请。每一步都能追溯。</p><div class="intro-flow"><span>提出问题</span><span>核对依据</span><span>确认操作</span></div><p class="environment">当前环境：本机演示 · 业务操作均为模拟</p></div>
+  <form id="login-form" method="post" action="/api/auth/login" class="login-form"><h2>登录工作台</h2><p>使用员工或管理员账号登录。</p><section id="demo-login" class="demo-login" aria-labelledby="demo-title" hidden><h3 id="demo-title">试用账号</h3><p>选择身份填入账号和密码，再点击登录。</p><div id="demo-accounts"></div><small>共享演示账号 · 业务操作均为模拟</small></section><label for="username">账号</label><input id="username" name="username" autocomplete="username" required maxlength="80"><label for="password">密码</label><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256"><button type="submit" class="primary" disabled>登录</button><noscript><p>请启用 JavaScript 后登录工作台。</p></noscript><p id="login-error" class="error" role="alert"></p><small>请勿在问答中发送真实密码或验证码。</small></form>
+</section>
+<div id="workspace" class="workspace" hidden>
+  <aside id="navigation-rail" class="rail"><div class="brand"><span class="brand-mark" aria-hidden="true">服</span> 服务台</div><button id="new-chat" class="primary">开始新会话</button><nav aria-label="工作区"><button id="nav-chat" class="nav-button selected">自助咨询</button><button id="nav-actions" class="nav-button">操作与审批</button><button id="nav-knowledge" class="nav-button" hidden>知识库管理</button><button id="nav-analytics" class="nav-button" hidden>运营统计</button><button id="nav-audit" class="nav-button" hidden>审计记录</button></nav><div class="rail-heading">最近会话</div><button id="toggle-history" class="mobile-history" aria-expanded="false" aria-controls="conversations">展开最近会话</button><div id="conversations" class="conversations"></div><footer class="identity"><span id="identity"></span><button id="logout" class="text-button">退出登录</button></footer></aside>
+  <main id="main" tabindex="-1"><header class="topbar"><button id="open-menu" class="menu-toggle" type="button" aria-label="打开侧边栏" aria-haspopup="dialog" aria-controls="mobile-drawer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div><h1 id="page-title">自助咨询</h1><p id="system-status">正在读取服务信息…</p></div><span class="simulation">模拟环境</span></header><div id="notice" role="status" aria-live="polite"></div>
+    <section id="chat-view" class="chat-layout"><div class="conversation"><div id="messages" class="messages" aria-live="polite"><div class="welcome"><h2>今天需要解决什么问题？</h2><p>描述你遇到的现象。助手会先查阅知识库，再提供建议或提出操作申请。</p><div class="suggestions"><button data-question="VPN 报错 809 怎么处理？">VPN 无法连接<span>排查网络和客户端</span></button><button data-question="我忘记密码了，请为我发起密码重置。">忘记账号密码<span>为自己发起重置</span></button><button data-question="我需要 gitlab 权限，用于参与项目代码评审，请申请。">申请资源权限<span>提交业务原因待审批</span></button></div></div></div><section id="employee-pending" class="employee-pending" hidden aria-label="我的待办"><h2>需要你处理</h2><div id="employee-pending-list"></div></section><form id="chat-form" class="composer"><label for="question">描述你的问题</label><div class="compose-row"><textarea id="question" rows="2" maxlength="4000" placeholder="描述你遇到的问题，或需要申请的服务" required></textarea><button id="send" type="submit" class="primary">发送</button></div><div class="compose-note"><span>不要输入密码、API Key 或验证码</span><span>Enter 发送 · Shift+Enter 换行</span></div></form></div>
+    <aside class="evidence" hidden><section><h2>回答依据</h2><p id="evidence-empty" class="muted">提问后，在这里核对来源与原文。</p><div id="citations"></div></section><section><h2>待确认操作</h2><p class="muted">申请不等于执行。确认前请核对对象和内容。</p><div id="pending-actions"></div></section><details class="trace"><summary>本轮工具记录</summary><div id="trace">还没有工具调用。</div></details></aside></section>
+    <section id="actions-view" class="section-view" hidden><div class="section-heading"><div><h2>操作与审批</h2><p>密码重置和工单由本人确认；权限申请需另一位管理员审批。</p></div><button id="refresh-actions">刷新</button></div><div id="actions-list"></div></section>
+    <section id="knowledge-view" class="section-view" hidden>
+      <div class="section-heading"><div><h2>知识库管理</h2><p>上传、替换和删除本租户文档。员工可见资料可用于员工问答，仅管理员资料不会进入员工检索。</p></div><button id="refresh-knowledge">刷新列表</button></div>
+      <form id="knowledge-form" class="knowledge-form">
+        <h3 id="knowledge-form-title">上传文档</h3>
+        <label for="document-title">文档标题</label><input id="document-title" required maxlength="120" placeholder="例如：VPN 客户端安装指引">
+        <label for="document-visibility">可见范围</label><select id="document-visibility"><option value="employee">本租户员工与管理员</option><option value="admin">仅本租户管理员</option></select>
+        <label for="document-file">选择文件</label><input id="document-file" type="file" accept=".txt,.md,.csv,.html,.docx,.xlsx,.pptx,.pdf" required aria-describedby="document-help">
+        <small id="document-help">支持 TXT、MD、CSV、HTML、DOCX、XLSX、PPTX、文本 PDF；最大 1 MB，提取文字不超过 10 万字符。扫描 PDF 请先进行 OCR。</small>
+        <div class="form-actions"><button id="upload-document" type="submit" class="primary">上传并入库</button><button id="cancel-document" type="button" hidden>取消替换</button></div>
+        <p id="document-status" role="status" aria-live="polite"></p>
+      </form>
+      <h3>已上传文档</h3><p class="muted">内置演示知识由部署维护，不在此列表中。更新时旧文档会持续可用，直到新版本入库完成。</p><div id="knowledge-list"></div>
+    </section>
+    <section id="analytics-view" class="section-view" hidden>
+      <div class="section-heading"><div><h2>运营统计</h2><p>本租户最近 30 天的新请求；重放请求不重复计数。点赞率仅代表已反馈样本。</p></div><button id="refresh-analytics">刷新统计</button></div>
+      <dl id="analytics-summary" class="analytics-summary"></dl>
+      <div class="analytics-sections"><section><h3>高频问题</h3><ol id="top-questions"></ol></section><section><h3>知识未命中问题</h3><p class="muted">这些问题使用通用建议，可据此补充知识库。</p><ul id="unanswered-questions"></ul></section><section><h3>每日请求（UTC）</h3><ul id="daily-requests"></ul></section><section><h3>最近反馈</h3><div id="feedback-list"></div></section></div>
+    </section>
+    <section id="audit-view" class="section-view" hidden><div class="section-heading"><div><h2>审计记录</h2><p id="audit-integrity">正在校验审计链…</p></div><button id="refresh-audit">刷新</button></div><div class="table-scroll"><table><thead><tr><th>时间</th><th>事件</th><th>对象</th><th>操作者</th></tr></thead><tbody id="audit-list"></tbody></table></div></section>
+  </main>
+</div>
+<dialog id="mobile-drawer" class="mobile-drawer" aria-label="服务台导航"><button id="close-menu" class="drawer-close" type="button" aria-label="收起侧边栏"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></dialog>
+</body></html>

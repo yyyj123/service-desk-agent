@@ -1,0 +1,21 @@
+groups:
+  - name: it-desk
+    rules:
+      - record: it:chat_latency:p95
+        expr: histogram_quantile(0.95, sum(rate(it_chat_completion_seconds_bucket[5m])) by (le))
+      - record: it:chat_latency:p99
+        expr: histogram_quantile(0.99, sum(rate(it_chat_completion_seconds_bucket[5m])) by (le))
+      - alert: ITDeskDown
+        expr: up{job="it-service-desk"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: IT service desk cannot be scraped
+      - alert: ITDeskErrorRate
+        expr: sum(rate(it_http_requests_total{status=~"5.."}[5m])) / clamp_min(sum(rate(it_http_requests_total[5m])), 0.001) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: More than 5 percent of requests fail
