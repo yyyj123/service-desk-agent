@@ -1,5 +1,9 @@
 # Service Desk Agent · 智能服务台
 
+## Windows 一键运行
+
+其他电脑下载并解压完整项目后，双击根目录的 **部署并启动.cmd**；停止时双击 **停止服务.cmd**。首次需要 Docker Desktop，并按提示填写自己的模型 API Key；脚本会初始化账号、知识库并打开浏览器。详见 [Windows 双击部署说明](WINDOWS-DEPLOY.md)。
+
 [![CI](https://github.com/yyyj123/service-desk-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/yyyj123/service-desk-agent/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
